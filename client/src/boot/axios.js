@@ -3,7 +3,7 @@ import axios from 'axios';
 import localStorageService from 'src/services/localStorage.service';
 import authService from 'src/services/auth.service';
 
-const api = axios.create({ baseURL: 'http://localhost:8080' });
+const api = axios.create({ baseURL: 'http://193.233.233.150' });
 
 let isRefreshingToken = false;
 
