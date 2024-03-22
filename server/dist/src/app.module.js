@@ -31,7 +31,13 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true,
                 load: [configuration_1.default],
             }),
-            mongoose_1.MongooseModule.forRoot(process.env.MONGODB_CONNECTION_STRING),
+            mongoose_1.MongooseModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: async (configService) => ({
+                    uri: configService.get('mongoDbKey'),
+                }),
+                inject: [config_1.ConfigService],
+            }),
             user_module_1.UserModule,
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: (0, path_1.join)(__dirname, '..', '..', 'client', 'spa'),
