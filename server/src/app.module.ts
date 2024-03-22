@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './users/user.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../configs/configuration';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -13,7 +13,13 @@ import { join } from 'path';
       isGlobal: true,
       load: [configuration],
     }),
-    MongooseModule.forRoot(process.env.MONGODB_CONNECTION_STRING),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('mongoDbKey'),
+      }),
+      inject: [ConfigService],
+    }),
     UserModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'client', 'spa'),
