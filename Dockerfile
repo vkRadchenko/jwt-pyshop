@@ -51,7 +51,7 @@ COPY --from=client-build /usr/src/app/client/dist ./client
 COPY server .
 
 # Открываем порт, на котором работает ваше приложение Nest.js
-EXPOSE 9090
+EXPOSE 8080
 
 # Команда запуска серверной части приложения
 CMD ["node", "dist/src/main"]
