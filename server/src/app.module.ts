@@ -13,11 +13,9 @@ import { join } from 'path';
       isGlobal: true,
       load: [configuration],
     }),
-    MongooseModule.forRootAsync({
-      useFactory: () => ({
-        uri: process.env.MONGODB_CONNECTION_STRING,
-      }),
-    }),
+    MongooseModule.forRoot(
+      'mongodb+srv://vkrad4enko_jwt_test:sUHEoBlq5wI9lzfg@cluster0.x7z35ha.mongodb.net/app?retryWrites=true&w=majority&appName=Cluster0',
+    ),
     UserModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'client', 'spa'),
