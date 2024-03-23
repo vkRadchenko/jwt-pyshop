@@ -33,10 +33,10 @@ exports.AppModule = AppModule = __decorate([
             }),
             mongoose_1.MongooseModule.forRootAsync({
                 imports: [config_1.ConfigModule],
-                useFactory: async (configService) => ({
-                    uri: configService.get('mongoDbKey'),
-                }),
                 inject: [config_1.ConfigService],
+                useFactory: async (configService) => ({
+                    uri: configService.get('MONGODB_CONNECTION_STRING'),
+                }),
             }),
             user_module_1.UserModule,
             serve_static_1.ServeStaticModule.forRoot({

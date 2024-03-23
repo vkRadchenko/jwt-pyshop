@@ -15,10 +15,10 @@ import { join } from 'path';
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get('mongoDbKey'),
-      }),
       inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('MONGODB_CONNECTION_STRING'),
+      }),
     }),
     UserModule,
     ServeStaticModule.forRoot({
