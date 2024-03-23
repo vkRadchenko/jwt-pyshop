@@ -34,6 +34,8 @@ COPY --from=client-build /app/client/dist /app/server/client/
 # Копируем остальные файлы проекта сервера в контейнер
 COPY server .
 
+RUN npm run build
+
 # Открываем порт, на котором работает ваше приложение Nest.js
 EXPOSE 9090
 
