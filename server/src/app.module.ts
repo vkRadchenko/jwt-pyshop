@@ -13,7 +13,11 @@ import { join } from 'path';
       isGlobal: true,
       load: [configuration],
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/test'),
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: process.env.MONGODB_CONNECTION_STRING,
+      }),
+    }),
     UserModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'client', 'spa'),
