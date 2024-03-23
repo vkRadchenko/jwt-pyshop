@@ -17,7 +17,7 @@ import { join } from 'path';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get('MONGODB_CONNECTION_STRING'),
+        uri: configService.get<string>('mongoDbKey'),
       }),
     }),
     UserModule,

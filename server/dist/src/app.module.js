@@ -35,7 +35,7 @@ exports.AppModule = AppModule = __decorate([
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
                 useFactory: async (configService) => ({
-                    uri: configService.get('MONGODB_CONNECTION_STRING'),
+                    uri: configService.get('mongoDbKey'),
                 }),
             }),
             user_module_1.UserModule,
