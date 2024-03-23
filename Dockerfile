@@ -2,7 +2,7 @@
 FROM node:latest AS client-build
 
 # Устанавливаем рабочую директорию внутри контейнера для клиентской части
-WORKDIR /app/client
+WORKDIR /usr/src/app/client
 
 # Копируем файлы package.json и package-lock.json для установки зависимостей клиентской части
 COPY client/package*.json ./
@@ -16,11 +16,27 @@ COPY client .
 # Собираем клиентскую часть проекта
 RUN npm run build
 
+
+FROM node:20-alpine AS build
+
+WORKDIR /usr/src/app/server
+
+COPY server/package*.json ./
+
+RUN npm install
+
+COPY server .
+
+RUN npm run build
+
+
 # Создаем новый этап с минимальным образом Node.js для серверной части
-FROM node:latest AS server-build
+FROM node:20-alpine
 
 # Устанавливаем рабочую директорию для серверной части
-WORKDIR /app/server
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app/server/dist ./dist
 
 # Копируем файлы package.json и package-lock.json для установки зависимостей серверной части
 COPY server/package*.json ./
@@ -29,12 +45,10 @@ COPY server/package*.json ./
 RUN npm install --only=production
 
 # Копируем скомпилированные файлы клиентской части из предыдущего этапа
-COPY --from=client-build /app/client/dist /app/server/client/
+COPY --from=client-build /usr/src/app/client/dist ./client
 
 # Копируем остальные файлы проекта сервера в контейнер
 COPY server .
-
-RUN npm run build
 
 # Открываем порт, на котором работает ваше приложение Nest.js
 EXPOSE 9090
